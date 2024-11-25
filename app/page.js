@@ -69,6 +69,10 @@ export default function Home() {
     fetchResults();
   }, [filters]);
 
+  function processDate(date) {
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  }
+
   return (
     <div className="container h-screen bg-white mx-auto my-20">
       <h1 className="text-4xl text-center font-bold">Cars App</h1>
@@ -91,6 +95,53 @@ export default function Home() {
             </li>
           ))}
         </ul>
+      </div>
+      <div className="my-20 flex flex-wrap items-center justify-center gap-4">
+        {results.length > 0 ? (
+          results.map((item, index) => (
+            <div
+              key={index}
+              className="w-96 border border-gray-300 rounded-lg p-4 shadow-md bg-white"
+            >
+              <h3 className="font-bold text-lg mb-2 capitalize">
+                {item.Name || "Unknown Car"}
+              </h3>
+              <ul className="space-y-2">
+                <li>
+                  <strong>Displacement:</strong> {item.Displacement}
+                </li>
+                <li>
+                  <strong>Miles per Gallon:</strong>{" "}
+                  {item.Miles_per_Gallon || "N/A"}
+                </li>
+                <li>
+                  <strong>Cylinders:</strong> {item.Cylinders}
+                </li>
+                <li>
+                  <strong>Horsepower:</strong> {item.Horsepower}
+                </li>
+                <li>
+                  <strong>Weight (lbs):</strong> {item.Weight_in_lbs}
+                </li>
+                <li>
+                  <strong>Acceleration:</strong> {item.Acceleration}
+                </li>
+                <li>
+                  <strong>Year:</strong> {processDate(new Date(item.Year))}
+                </li>
+                <li>
+                  <strong>Origin:</strong> {item.Origin}
+                </li>
+              </ul>
+            </div>
+          ))
+        ) : (
+          <div className="my-20">
+            <h3 className="font-bold text-lg mb-2 capitalize">
+              No Cars data available.
+            </h3>
+          </div>
+        )}
       </div>
     </div>
   );
