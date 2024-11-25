@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [filters, setFilters] = useState({
@@ -9,6 +9,8 @@ export default function Home() {
     horsepower: "",
     year: "",
   });
+
+  const [results, setResults] = useState([]);
 
   const onFilterValueChnage = (filter, value) => {
     setFilters((prevDetails) => {
@@ -24,6 +26,48 @@ export default function Home() {
       return newDetails;
     });
   };
+
+  const fetchResults = async () => {
+    try {
+      const baseUrl = "/api/Cars";
+
+      const queryParams = new URLSearchParams();
+
+      if (filters.displacement)
+        queryParams.append("displacement", filters.displacement);
+      if (filters.cylinders) queryParams.append("cylinders", filters.cylinders);
+      if (filters.horsepower)
+        queryParams.append("horsepower", filters.horsepower);
+      if (filters.year) queryParams.append("year", filters.year);
+
+      const url = `${
+        queryParams.size > 0
+          ? `${baseUrl}?${queryParams.toString()}`
+          : `${baseUrl}`
+      } `;
+
+      const res = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+
+      const response = await res.json();
+      if (res.ok) {
+        setResults(response.body);
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+      alert("Internal Server Error. Check console for details.");
+    }
+  };
+
+  useEffect(() => {
+    fetchResults();
+  }, [filters]);
 
   return (
     <div className="container h-screen bg-white mx-auto my-20">
