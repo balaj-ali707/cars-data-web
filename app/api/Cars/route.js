@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 export const GET = async (req) => {
   try {
-
     const db = await dbMiddleware();
 
     const { searchParams } = new URL(req.url);
@@ -31,7 +30,7 @@ export const GET = async (req) => {
 
     const [rows] = await db.query(query, queryParams);
 
-    console.log("Filtered rows:", rows);
+    // console.log("Filtered rows:", rows);
 
     return NextResponse.json({ body: rows }, { status: 200 });
   } catch (error) {
@@ -44,6 +43,73 @@ export const GET = async (req) => {
   }
 };
 
+export const POST = async (req) => {
+  try {
+    const db = await dbMiddleware();
+
+    const body = await req.json();
+
+    const {
+      Name,
+      Miles_per_Gallon,
+      Cylinders,
+      Displacement,
+      Horsepower,
+      Weight_in_lbs,
+      Acceleration,
+      Year,
+      Origin,
+    } = body;
+
+    if (
+      !Name ||
+      !Miles_per_Gallon ||
+      !Cylinders ||
+      !Displacement ||
+      !Horsepower ||
+      !Weight_in_lbs ||
+      !Acceleration ||
+      !Year ||
+      !Origin
+    ) {
+      return NextResponse.json(
+        { message: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    const query = `
+        INSERT INTO cars (
+          Name, Miles_per_Gallon, Cylinders, Displacement, Horsepower,
+          Weight_in_lbs, Acceleration, Year, Origin
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+
+    const values = [
+      Name,
+      Miles_per_Gallon,
+      Cylinders,
+      Displacement,
+      Horsepower,
+      Weight_in_lbs,
+      Acceleration,
+      Year,
+      Origin,
+    ];
+
+    const [result] = await db.query(query, values);
 
 
+    return NextResponse.json(
+      { message: "Data inserted successfully", data: result },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Error inserting data into database:", error);
 
+    return NextResponse.json(
+      { message: "Internal Server Error", error: error.message },
+      { status: 500 }
+    );
+  }
+};
