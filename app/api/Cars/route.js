@@ -9,6 +9,7 @@ export const GET = async (req) => {
     const cylinders = searchParams.get("cylinders");
     const year = searchParams.get("year");
     const horsepower = searchParams.get("horsepower");
+    const displacement = searchParams.get("displacement")
 
     let query = `SELECT * FROM cars WHERE 1=1`;
     const queryParams = [];
@@ -16,6 +17,11 @@ export const GET = async (req) => {
     if (cylinders) {
       query += ` AND Cylinders = ?`;
       queryParams.push(Number(cylinders));
+    }
+
+    if (displacement) {
+        query += ` AND Displacement = ? `
+        queryParams.push(Number(displacement))
     }
 
     if (year) {
