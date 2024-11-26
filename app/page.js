@@ -73,76 +73,103 @@ export default function Home() {
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   }
 
-  return (
-    <div className="container h-screen bg-white mx-auto my-20">
-      <h1 className="text-4xl text-center font-bold">Cars App</h1>
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const userDetails = localStorage.getItem("userDetails");
+    if (userDetails) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
-      <div className="my-20 space-y-3">
-        <h2 className="text-xl text-center">Filters</h2>
-        <ul className="flex items-center justify-center">
-          {Object.keys(filters).map((filter, index) => (
-            <li key={index}>
-              <input
-                type={filter === "year" ? "date" : "number"}
-                name={filter}
-                value={filters[filter]}
-                placeholder={filter}
-                onChange={({ target }) =>
-                  onFilterValueChnage(filter, target.value)
-                }
-                className="w-52 border-2 border-[#e9e9e9] outline-none text-xl uppercase px-5 py-2 mx-3 rounded"
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="my-20 flex flex-wrap items-center justify-center gap-4">
-        {results.length > 0 ? (
-          results.map((item, index) => (
-            <div
-              key={index}
-              className="w-96 border border-gray-300 rounded-lg p-4 shadow-md bg-white"
-            >
-              <h3 className="font-bold text-lg mb-2 capitalize">
-                {item.Name || "Unknown Car"}
-              </h3>
-              <ul className="space-y-2">
-                <li>
-                  <strong>Displacement:</strong> {item.Displacement}
-                </li>
-                <li>
-                  <strong>Miles per Gallon:</strong>{" "}
-                  {item.Miles_per_Gallon || "N/A"}
-                </li>
-                <li>
-                  <strong>Cylinders:</strong> {item.Cylinders}
-                </li>
-                <li>
-                  <strong>Horsepower:</strong> {item.Horsepower}
-                </li>
-                <li>
-                  <strong>Weight (lbs):</strong> {item.Weight_in_lbs}
-                </li>
-                <li>
-                  <strong>Acceleration:</strong> {item.Acceleration}
-                </li>
-                <li>
-                  <strong>Year:</strong> {processDate(new Date(item.Year))}
-                </li>
-                <li>
-                  <strong>Origin:</strong> {item.Origin}
-                </li>
-              </ul>
-            </div>
-          ))
+  return (
+    <>
+      <div className="absolute top-5 right-0">
+        {isLoggedIn ? (
+          <button
+            type="button"
+            className="border-2 border-blue-500 text-blue-700 hover:bg-blue-500 hover:text-white bg-transparent text-xl px-7 py-2 mx-5 rounded-lg"
+          >
+            {JSON.parse(localStorage.getItem("userDetails")).name}
+          </button>
         ) : (
-          <div className="my-20">
-            <h3 className="font-bold text-lg mb-2 capitalize">
-              No Cars data available.
-            </h3>
-          </div>
+          <button
+            type="button"
+            className="border-2 border-blue-500 text-blue-700 hover:bg-blue-500 hover:text-white bg-transparent text-xl px-7 py-2 mx-5 rounded-lg"
+          >
+            Login
+          </button>
         )}
       </div>
-    </div>
+      <div className="container h-screen bg-white mx-auto my-20">
+        <h1 className="text-4xl text-center font-bold">Cars App</h1>
+
+        <div className="my-20 space-y-3">
+          <h2 className="text-xl text-center">Filters</h2>
+          <ul className="flex items-center justify-center">
+            {Object.keys(filters).map((filter, index) => (
+              <li key={index}>
+                <input
+                  type={filter === "year" ? "date" : "number"}
+                  name={filter}
+                  value={filters[filter]}
+                  placeholder={filter}
+                  onChange={({ target }) =>
+                    onFilterValueChnage(filter, target.value)
+                  }
+                  className="w-52 border-2 border-[#e9e9e9] outline-none text-xl uppercase px-5 py-2 mx-3 rounded"
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="my-20 flex flex-wrap items-center justify-center gap-4">
+          {results.length > 0 ? (
+            results.map((item, index) => (
+              <div
+                key={index}
+                className="w-96 border border-gray-300 rounded-lg p-4 shadow-md bg-white"
+              >
+                <h3 className="font-bold text-lg mb-2 capitalize">
+                  {item.Name || "Unknown Car"}
+                </h3>
+                <ul className="space-y-2">
+                  <li>
+                    <strong>Displacement:</strong> {item.Displacement}
+                  </li>
+                  <li>
+                    <strong>Miles per Gallon:</strong>{" "}
+                    {item.Miles_per_Gallon || "N/A"}
+                  </li>
+                  <li>
+                    <strong>Cylinders:</strong> {item.Cylinders}
+                  </li>
+                  <li>
+                    <strong>Horsepower:</strong> {item.Horsepower}
+                  </li>
+                  <li>
+                    <strong>Weight (lbs):</strong> {item.Weight_in_lbs}
+                  </li>
+                  <li>
+                    <strong>Acceleration:</strong> {item.Acceleration}
+                  </li>
+                  <li>
+                    <strong>Year:</strong> {processDate(new Date(item.Year))}
+                  </li>
+                  <li>
+                    <strong>Origin:</strong> {item.Origin}
+                  </li>
+                </ul>
+              </div>
+            ))
+          ) : (
+            <div className="my-20">
+              <h3 className="font-bold text-lg mb-2 capitalize">
+                No Cars data available.
+              </h3>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
   );
 }

@@ -57,6 +57,7 @@ export const PUT = async (req) => {
       const body = await req.json();
       const { email, password } = body;
 
+      console.log(body)
       if (!email || !password) {
         return NextResponse.json(
           { message: "Missing email or password" },
