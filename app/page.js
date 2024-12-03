@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -73,6 +74,8 @@ export default function Home() {
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   }
 
+  const router = useRouter()
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const userDetails = localStorage.getItem("userDetails");
@@ -87,6 +90,7 @@ export default function Home() {
         {isLoggedIn ? (
           <button
             type="button"
+            onClick={() => { router.push("/admin")}}
             className="border-2 border-blue-500 text-blue-700 hover:bg-blue-500 hover:text-white bg-transparent text-xl px-7 py-2 mx-5 rounded-lg"
           >
             {JSON.parse(localStorage.getItem("userDetails")).name}
@@ -94,6 +98,7 @@ export default function Home() {
         ) : (
           <button
             type="button"
+            onClick={() => { router.push("/login")}}
             className="border-2 border-blue-500 text-blue-700 hover:bg-blue-500 hover:text-white bg-transparent text-xl px-7 py-2 mx-5 rounded-lg"
           >
             Login

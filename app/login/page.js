@@ -31,7 +31,7 @@ const Page = () => {
 
       const response = await res.json()
       if(res.ok) {
-        localStorage.setItem("userDetails", response.user)
+        localStorage.setItem("userDetails", JSON.stringify(response.user))
         router.push("/")
       } else {
         throw new Error(response.message)
