@@ -32,15 +32,15 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 ## Configure Environment Variables
 To use SQL and login functionality, you need to configure environment variables in your project.
 
- - Create a .env.local file in the root directory of your project.
- - Add the following variables to configure your MySQL database:
+Create a .env.local file in the root directory of your project.
+Add the following variables to configure your MySQL database:
 
  - MYSQL_HOST=your_mysql_host
  - MYSQL_USER=your_mysql_user
  - MYSQL_PASSWORD=your_mysql_password
  - MYSQL_DATABASE=your_mysql_database
 
- - Add a secret key for login encryption:
+Add a secret key for login encryption:
 
  - ENCRYPTION_KEY=your_secret_key
 Note: Replace your_mysql_host, your_mysql_user, your_mysql_password, your_mysql_database, and your_secret_key with your actual values. Make sure to use a strong, secure key for ENCRYPTION_KEY.
