@@ -105,12 +105,12 @@ export default function Home() {
           </button>
         )}
       </div>
-      <div className="container h-screen bg-white mx-auto my-20">
+      <div className="container h-full bg-white mx-auto my-20">
         <h1 className="text-4xl text-center font-bold">Cars App</h1>
 
         <div className="my-20 space-y-3">
           <h2 className="text-xl text-center">Filters</h2>
-          <ul className="flex items-center justify-center">
+          <ul className="flex lg:flex-row flex-col items-center justify-center">
             {Object.keys(filters).map((filter, index) => (
               <li key={index}>
                 <input
@@ -121,7 +121,7 @@ export default function Home() {
                   onChange={({ target }) =>
                     onFilterValueChnage(filter, target.value)
                   }
-                  className="w-52 border-2 border-[#e9e9e9] outline-none text-xl uppercase px-5 py-2 mx-3 rounded"
+                  className="lg:w-52 w-96 border-2 border-[#e9e9e9] outline-none text-xl uppercase px-5 py-2 mx-3 lg:mt-0 mt-7 rounded"
                 />
               </li>
             ))}
